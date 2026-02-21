@@ -23,7 +23,6 @@ The main goal of this laboratory work was to continue the evolving project start
 ## Implementation Description
 
 The project was implemented in **Java**, building upon the existing structure from the previous laboratory.
-
 ### 1. Grammar Class (`Grammar.java`)
 The grammar class was updated with a new classification method named `classifyChomsky()`. This method iterates through all production rules, checking the length and casing of the characters on both the left and right sides of the productions. By verifying these constraints progressively, it correctly identifies the most restrictive grammar type that applies.
 
@@ -38,10 +37,12 @@ if (lhs.length() == 1 && Character.isUpperCase(lhs.charAt(0))) {
         isRegular = false;
     }
 }
-2. Finite Automaton Class (FiniteAutomaton.java)
+```
+
+### 2. Finite Automaton Class (`FiniteAutomaton.java`)
 This class received major structural updates to handle non-determinism. A new method was added to iterate over the existing states and map them into grammar productions. The conversion from a non-deterministic to a deterministic automaton was achieved using the subset construction technique. A queue is used to process new macro-states formed by grouping the original states together. Every time a transition leads to multiple states, those states are merged into a single new entity.
 
-Java
+```java
 // Snippet from FiniteAutomaton.java: Subset construction core logic
 for (char symbol : alphabet) {
     Set<String> nextDFAState = new HashSet<>();
@@ -58,22 +59,26 @@ for (char symbol : alphabet) {
         }
     }
 }
-Challenges and Solutions
+```
+
+## Challenges and Solutions
 During the development process, a significant architectural problem emerged regarding the internal data representation of the automaton. In the first laboratory, the transition matrix was designed under the assumption that the automaton would always be deterministic. I initially used a map that linked a state and a character to a single destination string. However, variant 10 features a non-deterministic automaton, where the input character 'b' from state q1 leads to multiple different states simultaneously. To solve this issue, I had to heavily refactor the internal data structures of the project. I modified the transition map to use a Set of strings for the destinations instead of a single string. This cascading change broke the validation methods from the first lab, requiring me to completely rethink how transitions are accessed and stored throughout the entire project.
 
 Another subtle challenge appeared when implementing the conversion from the finite automaton to the regular grammar. Representing the final states required inserting the empty string into the production rules. Standard string manipulation in Java does not handle empty mathematical concepts well out of the box. I solved this by injecting the Unicode character for epsilon directly into the production list whenever a final state was processed, which allowed the grammar generator to recognize the end of a valid word without throwing string out-of-bounds exceptions.
 
 The most demanding part of the laboratory was implementing the subset construction algorithm, specifically tracking the new macro-states which were technically sets containing other sets of strings. Managing these nested structures proved extremely difficult to debug and display. I solved this structural limitation by creating a helper formatting function. This function takes a mathematical set of states, sorts them alphabetically, and concatenates them into a single clean string identifier, such as transforming the complex set containing q1 and q2 into the simple string representation S_(q1,q2). This approach made the generation of the final deterministic automaton much cleaner and the final output significantly easier to trace during debugging.
 
-Results and Analysis
+## Results and Analysis
 I executed the program using a main client class configured precisely with the initial states, alphabet, and transitions dictated by variant 10. The output confirmed that the initial automaton is non-deterministic, extracted the grammar, successfully classified it, and finally generated the new equivalent DFA.
 
-![Rezultat Executie]({9CBB1089-BC6A-4678-A9A0-DB38123FFA19}.png)
+### Execution Output
 
-Analysis
+![Rezultat Executie](rezultat.png)
+
+### Analysis
 The results demonstrate that the initial automaton from variant 10 is correctly flagged as non-deterministic due to the explicit bifurcations present in state q1 when receiving the input 'b'. The program successfully extracts the corresponding regular grammar from the automaton transitions, dynamically including the necessary epsilon rules for the final state q3. The classification algorithm accurately analyzes the structure of these generated rules and correctly identifies the grammar as a Type 3 Regular Grammar.
 
 Analyzing the output of the subset construction reveals that the non-determinism was successfully resolved. For instance, in the original automaton, being in state q1 and receiving 'b' created uncertainty. In the newly generated machine, receiving 'b' in S_(q1) transitions predictably to the new macro-state S_(q1,q2). From this new macro-state, the machine perfectly maps all possible futures without any ambiguity. An inspection of the final console output verifies that every macro-state now has exactly one defined path for each given input symbol, confirming the absolute success of the determinization algorithm.
 
-Conclusion
+## Conclusion
 In this laboratory work, I successfully expanded the functionality of my formal languages project by handling the complexities of non-determinism. By refactoring the original codebase to accommodate multiple transition paths, I learned how to adapt software architecture to more advanced theoretical concepts. Implementing the subset construction algorithm practically demonstrated that any non-deterministic automaton can be systematically transformed into a predictable, deterministic machine. Furthermore, writing the algorithm to classify grammars based on the Chomsky hierarchy provided a deeper understanding of the structural constraints that define different types of formal languages.
