@@ -68,6 +68,12 @@ The most demanding part of the laboratory was implementing the subset constructi
 Results and Analysis
 I executed the program using a main client class configured precisely with the initial states, alphabet, and transitions dictated by variant 10. The output confirmed that the initial automaton is non-deterministic, extracted the grammar, successfully classified it, and finally generated the new equivalent DFA.
 
+({{9CBB1089-BC6A-4678-A9A0-DB38123FFA19}}.png)
+
+Analysis
+The results demonstrate that the initial automaton from variant 10 is correctly flagged as non-deterministic due to the explicit bifurcations present in state q1 when receiving the input 'b'. The program successfully extracts the corresponding regular grammar from the automaton transitions, dynamically including the necessary epsilon rules for the final state q3. The classification algorithm accurately analyzes the structure of these generated rules and correctly identifies the grammar as a Type 3 Regular Grammar.
+
+Analyzing the output of the subset construction reveals that the non-determinism was successfully resolved. For instance, in the original automaton, being in state q1 and receiving 'b' created uncertainty. In the newly generated machine, receiving 'b' in S_(q1) transitions predictably to the new macro-state S_(q1,q2). From this new macro-state, the machine perfectly maps all possible futures without any ambiguity. An inspection of the final console output verifies that every macro-state now has exactly one defined path for each given input symbol, confirming the absolute success of the determinization algorithm.
 
 Conclusion
 In this laboratory work, I successfully expanded the functionality of my formal languages project by handling the complexities of non-determinism. By refactoring the original codebase to accommodate multiple transition paths, I learned how to adapt software architecture to more advanced theoretical concepts. Implementing the subset construction algorithm practically demonstrated that any non-deterministic automaton can be systematically transformed into a predictable, deterministic machine. Furthermore, writing the algorithm to classify grammars based on the Chomsky hierarchy provided a deeper understanding of the structural constraints that define different types of formal languages.
