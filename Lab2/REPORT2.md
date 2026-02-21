@@ -68,7 +68,7 @@ The most demanding part of the laboratory was implementing the subset constructi
 Results and Analysis
 I executed the program using a main client class configured precisely with the initial states, alphabet, and transitions dictated by variant 10. The output confirmed that the initial automaton is non-deterministic, extracted the grammar, successfully classified it, and finally generated the new equivalent DFA.
 
-![Rezultat Executie] ({9CBB1089-BC6A-4678-A9A0-DB38123FFA19}.png)
+![Rezultat Executie]({9CBB1089-BC6A-4678-A9A0-DB38123FFA19}.png)
 
 Analysis
 The results demonstrate that the initial automaton from variant 10 is correctly flagged as non-deterministic due to the explicit bifurcations present in state q1 when receiving the input 'b'. The program successfully extracts the corresponding regular grammar from the automaton transitions, dynamically including the necessary epsilon rules for the final state q3. The classification algorithm accurately analyzes the structure of these generated rules and correctly identifies the grammar as a Type 3 Regular Grammar.
