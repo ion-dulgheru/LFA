@@ -40,11 +40,10 @@ public class Grammar
     }
 
     public FiniteAutomaton toFiniteAutomaton() {
-        // Această metodă convertește regulile gramaticii în tranziții de automat
+      
         Set<String> states = new HashSet<>(rules.keySet());
-        states.add("X"); // Adăugăm o stare finală fictivă "X" pentru regulile terminale (L->b)
+        states.add("X"); 
         
-        // Structura pentru tranziții: Stare -> (Input -> Destinație)
         Map<String, Map<Character, String>> transitions = new HashMap<>();
 
         for (String state : rules.keySet()) {
@@ -55,10 +54,8 @@ public class Grammar
                 String nextState;
 
                 if (production.length() > 1) {
-                    // Caz: aB -> tranziție către B cu input 'a'
                     nextState = production.substring(1);
                 } else {
-                    // Caz: b -> tranziție către starea finală X cu input 'b'
                     nextState = "X";
                 }
                 transitions.get(state).put(input, nextState);
